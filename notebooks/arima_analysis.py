@@ -9,9 +9,9 @@ from src.utils import plot_forecast
 
 # ── Load ──────────────────────────────────────────────────────────────────────
 sales, calendar, prices = load_m5_data(
-    'data/raw/sales_train_evaluation.csv',
-    'data/raw/calendar.csv',
-    'data/raw/sell_prices.csv'
+    '../data/raw/sales_train_validation.csv',
+    '../data/raw/calendar.csv',
+    '../data/raw/sell_prices.csv'
 )
 
 sales_long = melt_sales(sales)
@@ -35,7 +35,7 @@ plot_acf(series.dropna(),  ax=axes[0], lags=40)
 plot_pacf(series.dropna(), ax=axes[1], lags=40)
 plt.suptitle(f'ACF / PACF — {ITEM_ID}')
 plt.tight_layout()
-plt.savefig('data/processed/acf_pacf.png')
+plt.savefig('../data/processed/acf_pacf.png')
 plt.close()
 
 # ── Fit & Forecast ────────────────────────────────────────────────────────────
@@ -48,5 +48,5 @@ print(f'Forecast trend: {trend}')
 print(model.summary())
 
 fig = plot_forecast(series, preds, ci, ITEM_ID)
-fig.savefig('data/processed/forecast.png')
+fig.savefig('../data/processed/forecast.png')
 plt.close()

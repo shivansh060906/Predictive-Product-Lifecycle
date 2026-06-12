@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 def load_m5_data(sales_path: str, calendar_path: str, prices_path: str):
     sales = pd.read_csv(sales_path)
     calendar = pd.read_csv(calendar_path)

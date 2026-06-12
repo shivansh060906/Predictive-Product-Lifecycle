@@ -10,9 +10,9 @@ logger = setup_logger()
 # ── Load & Preprocess ─────────────────────────────────────────────────────────
 logger.info('Loading data...')
 sales, calendar, prices = load_m5_data(
-    'data/raw/sales_train_evaluation.csv',
-    'data/raw/calendar.csv',
-    'data/raw/sell_prices.csv'
+    '../data/raw/sales_train_validation.csv',
+    '../data/raw/calendar.csv',
+    '../data/raw/sell_prices.csv'
 )
 
 sales_long = melt_sales(sales)
@@ -33,7 +33,7 @@ for item_id in agg['item_id'].unique():
     model  = fit_arima(series)
     arima_models[item_id] = model
 
-save_model(arima_models, 'models/arima_models.pkl')
+save_model(arima_models, '../models/arima_models.pkl')
 logger.info('Saved → models/arima_models.pkl')
 
 # ── Clustering ────────────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ feature_matrix = build_feature_matrix(agg)
 feature_matrix, kmeans, scaler = cluster_products(feature_matrix)
 feature_matrix = label_clusters(feature_matrix)
 
-save_clustering(kmeans, scaler, 'models/clustering.pkl')
+save_clustering(kmeans, scaler, '../models/clustering.pkl')
 logger.info('Saved → models/clustering.pkl')
 
 logger.info('Done.')

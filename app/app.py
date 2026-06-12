@@ -1,6 +1,11 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 from src.data_loader        import load_m5_data, melt_sales, merge_calendar, select_products
 from src.preprocess         import aggregate_sales, handle_missing, get_product_series
@@ -11,13 +16,14 @@ from src.lifecycle          import run_lifecycle_analysis
 from src.utils              import plot_forecast, format_results_table
 
 st.set_page_config(page_title='Product Lifecycle Dashboard', layout='wide')
-st.title('🛍️ Predictive Product Lifecycle Analysis')
+st.title('Predictive Product Lifecycle Analysis')
+
+sales_path = os.path.join(BASE_DIR, 'data', 'raw', 'sales_train_validation.csv')
+calendar_path = os.path.join(BASE_DIR, 'data', 'raw', 'calendar.csv')
+prices_path = os.path.join(BASE_DIR, 'data', 'raw', 'sell_prices.csv')
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 st.sidebar.header('Data Settings')
-sales_path    = st.sidebar.text_input('Sales CSV path',    'data/raw/sales_train_evaluation.csv')
-calendar_path = st.sidebar.text_input('Calendar CSV path', 'data/raw/calendar.csv')
-prices_path   = st.sidebar.text_input('Prices CSV path',   'data/raw/sell_prices.csv')
 n_products    = st.sidebar.slider('Number of products to analyse', 5, 50, 20)
 store_filter  = st.sidebar.text_input('Filter by store (optional)', '')
 forecast_days = st.sidebar.slider('Forecast horizon (days)', 15, 60, 30)
@@ -67,14 +73,14 @@ if 'results' in st.session_state:
     results        = st.session_state['results']
     feature_matrix = st.session_state['feature_matrix']
 
-    st.subheader('📊 Lifecycle Summary Table')
+    st.subheader('Lifecycle Summary Table')
     summary_df = format_results_table([
         {k: v for k, v in r.items() if k not in ('series', 'preds', 'ci')}
         for r in results
     ])
     st.dataframe(summary_df, use_container_width=True)
 
-    st.subheader('🔍 Individual Product Deep-Dive')
+    st.subheader('Individual Product Deep-Dive')
     product_ids = [r['item_id'] for r in results]
     selected    = st.selectbox('Select a product', product_ids)
 
@@ -86,12 +92,12 @@ if 'results' in st.session_state:
         col2.metric('Forecast Trend',  r['forecast_trend'])
         col3.metric('Days to Decline', str(r['days_to_decline']))
 
-        st.info(f"💡 **Recommendation:** {r['recommendation']}")
+        st.info(f"**Recommendation:** {r['recommendation']}")
 
         fig = plot_forecast(r['series'], r['preds'], r['ci'], selected)
         st.pyplot(fig)
 
-    st.subheader('🗂️ Cluster Overview')
+    st.subheader('Cluster Overview')
     st.dataframe(
         feature_matrix[['item_id', 'avg_sales', 'growth_rate', 'trend_slope', 'cluster_label']],
         use_container_width=True

@@ -8,9 +8,9 @@ from src.feature_engineering import build_feature_matrix
 
 # ── Load ──────────────────────────────────────────────────────────────────────
 sales, calendar, prices = load_m5_data(
-    'data/raw/sales_train_validation.csv',
-    'data/raw/calendar.csv',
-    'data/raw/sell_prices.csv'
+    '../data/raw/sales_train_validation.csv',
+    '../data/raw/calendar.csv',
+    '../data/raw/sell_prices.csv'
 )
 
 sales_long = melt_sales(sales)
@@ -30,7 +30,7 @@ plt.figure(figsize=(8, 4))
 sns.histplot(agg['sales'], bins=50, kde=True)
 plt.title('Sales Distribution')
 plt.tight_layout()
-plt.savefig('data/processed/sales_distribution.png')
+plt.savefig('../data/processed/sales_distribution.png')
 plt.close()
 
 # ── Sales Over Time (per product) ─────────────────────────────────────────────
@@ -41,7 +41,7 @@ ax.set_title('Sales Over Time — All Products')
 ax.set_xlabel('Date')
 ax.set_ylabel('Sales')
 plt.tight_layout()
-plt.savefig('data/processed/sales_over_time.png')
+plt.savefig('../data/processed/sales_over_time.png')
 plt.close()
 
 # ── Feature Matrix ────────────────────────────────────────────────────────────
@@ -49,5 +49,5 @@ feature_matrix = build_feature_matrix(agg)
 print(feature_matrix.describe())
 
 sns.pairplot(feature_matrix.drop(columns='item_id'))
-plt.savefig('data/processed/feature_pairplot.png')
+plt.savefig('../data/processed/feature_pairplot.png')
 plt.close()
