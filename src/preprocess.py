@@ -15,9 +15,6 @@ def aggregate_sales(sales_long: pd.DataFrame) -> pd.DataFrame:
 
 
 def handle_missing(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Fill missing dates and zero-fill sales gaps.
-    """
     filled_frames = []
 
     for item_id, group in df.groupby('item_id'):
@@ -31,9 +28,6 @@ def handle_missing(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_product_series(df: pd.DataFrame, item_id: str) -> pd.Series:
-    """
-    Return a clean time series for a single product.
-    """
     product_df = df[df['item_id'] == item_id].copy()
     product_df = product_df.set_index('date').sort_index()
     return product_df['sales']

@@ -3,9 +3,6 @@ import numpy as np
 from scipy.stats import linregress
 
 def add_rolling_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Add rolling mean and variance features per product.
-    """
     result_frames = []
 
     for item_id, group in df.groupby('item_id'):
@@ -19,9 +16,6 @@ def add_rolling_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_growth_rate(series: pd.Series, window: int = 30) -> float:
-    """
-    Compute percentage growth rate over a trailing window.
-    """
     if len(series) < window:
         return 0.0
     recent = series.iloc[-window:]
@@ -31,9 +25,6 @@ def compute_growth_rate(series: pd.Series, window: int = 30) -> float:
 
 
 def compute_trend_slope(series: pd.Series) -> float:
-    """
-    Fit a linear regression and return the slope as trend indicator.
-    """
     if len(series) < 2:
         return 0.0
     x = np.arange(len(series))
@@ -46,9 +37,6 @@ def compute_variance(series: pd.Series) -> float:
 
 
 def build_feature_matrix(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Build a per-product feature matrix for clustering.
-    """
     records = []
     for item_id, group in df.groupby('item_id'):
         series = group.sort_values('date')['sales']

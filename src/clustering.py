@@ -10,10 +10,6 @@ def cluster_products(
     n_clusters: int = 3,
     random_state: int = 42
 ) -> pd.DataFrame:
-    """
-    Cluster products based on feature matrix.
-    Returns feature_matrix with cluster labels appended.
-    """
     features = ['avg_sales', 'growth_rate', 'variance', 'trend_slope']
     X = feature_matrix[features].fillna(0)
 
@@ -28,12 +24,6 @@ def cluster_products(
 
 
 def label_clusters(feature_matrix: pd.DataFrame) -> pd.DataFrame:
-    """
-    Assign human-readable labels to clusters based on avg growth rate.
-    Cluster with highest growth → 'Growing'
-    Cluster with lowest       → 'Declining'
-    Middle                    → 'Stable'
-    """
     cluster_summary = (
         feature_matrix
         .groupby('cluster')['growth_rate']

@@ -21,16 +21,7 @@ def ensure_dir(path: str):
     os.makedirs(path, exist_ok=True)
 
 
-def plot_forecast(
-    historical: pd.Series,
-    preds,
-    conf_int,
-    item_id: str,
-    save_path: str = None
-):
-    """
-    Plot historical sales and ARIMA forecast with confidence interval.
-    """
+def plot_forecast(historical: pd.Series, preds, conf_int, item_id: str, save_path: str = None):
     fig, ax = plt.subplots(figsize=(12, 5))
 
     ax.plot(historical.index, historical.values, label='Historical', color='steelblue')
@@ -61,9 +52,6 @@ def plot_forecast(
 
 
 def format_results_table(results: list) -> pd.DataFrame:
-    """
-    Convert list of lifecycle result dicts into a formatted DataFrame.
-    """
     df = pd.DataFrame(results)
     df = df.rename(columns={
         'item_id':         'Product',

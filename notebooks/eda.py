@@ -8,7 +8,7 @@ from src.feature_engineering import build_feature_matrix
 
 # ── Load ──────────────────────────────────────────────────────────────────────
 sales, calendar, prices = load_m5_data(
-    'data/raw/sales_train_evaluation.csv',
+    'data/raw/sales_train_validation.csv',
     'data/raw/calendar.csv',
     'data/raw/sell_prices.csv'
 )

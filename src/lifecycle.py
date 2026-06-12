@@ -11,9 +11,6 @@ def classify_lifecycle(
     forecast_trend: str,
     variance: float
 ) -> str:
-    """
-    Rule-based lifecycle classification.
-    """
     if growth_rate > GROWTH_THRESHOLD or forecast_trend == 'Increasing':
         return 'Growth'
     elif growth_rate < DECLINE_THRESHOLD or forecast_trend == 'Decreasing':
@@ -27,11 +24,6 @@ def estimate_time_to_decline(
     current_avg: float,
     drop_threshold: float = 0.3
 ) -> int:
-    """
-    Estimate how many days until forecast drops below
-    (1 - drop_threshold) * current_avg.
-    Returns -1 if no decline detected in forecast window.
-    """
     target = current_avg * (1 - drop_threshold)
     for i, val in enumerate(preds):
         if val < target:
@@ -40,9 +32,6 @@ def estimate_time_to_decline(
 
 
 def generate_recommendation(stage: str, days_to_decline: int) -> str:
-    """
-    Return a plain-language recommendation based on lifecycle stage.
-    """
     if stage == 'Growth':
         return 'Product is in growth phase. Scale inventory and increase marketing spend.'
     elif stage == 'Maturity':
@@ -61,9 +50,7 @@ def run_lifecycle_analysis(
     preds,
     current_avg: float
 ) -> dict:
-    """
-    Full lifecycle analysis for a single product.
-    """
+
     stage           = classify_lifecycle(growth_rate, forecast_trend, variance)
     days_to_decline = estimate_time_to_decline(preds, current_avg)
     recommendation  = generate_recommendation(stage, days_to_decline)

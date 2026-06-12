@@ -6,9 +6,6 @@ import pmdarima as pm
 
 
 def check_stationarity(series: pd.Series) -> dict:
-    """
-    Run ADF test and return result summary.
-    """
     result = adfuller(series.dropna())
     return {
         'adf_statistic': result[0],
@@ -18,9 +15,6 @@ def check_stationarity(series: pd.Series) -> dict:
 
 
 def fit_arima(series: pd.Series, seasonal: bool = False) -> pm.ARIMA:
-    """
-    Auto-fit ARIMA model using pmdarima.
-    """
     model = pm.auto_arima(
         series,
         seasonal=seasonal,
@@ -33,17 +27,11 @@ def fit_arima(series: pd.Series, seasonal: bool = False) -> pm.ARIMA:
 
 
 def forecast(model: pm.ARIMA, steps: int = 30) -> np.ndarray:
-    """
-    Generate future forecasts.
-    """
     preds, conf_int = model.predict(n_periods=steps, return_conf_int=True)
     return preds, conf_int
 
 
 def get_forecast_trend(preds: np.ndarray, threshold: float = 0.01) -> str:
-    """
-    Determine trend direction from forecast values.
-    """
     slope = np.polyfit(np.arange(len(preds)), preds, 1)[0]
     if slope > threshold:
         return 'Increasing'
