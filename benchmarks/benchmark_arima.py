@@ -11,7 +11,6 @@ logger = setup_logger('benchmark_arima')
 
 HOLDOUT_DAYS = 30
 
-
 def naive_forecast(series: pd.Series, steps: int) -> np.ndarray:
     """Last-value-carried-forward baseline."""
     return np.full(steps, series.iloc[-1])

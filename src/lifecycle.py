@@ -1,8 +1,8 @@
 import pandas as pd
 
 
-GROWTH_THRESHOLD   = 0.05   # 5% growth rate
-DECLINE_THRESHOLD  = -0.05  # -5% growth rate
+GROWTH_THRESHOLD   = 0.10   # 5% growth rate
+DECLINE_THRESHOLD  = -0.10  # -5% growth rate
 VARIANCE_THRESHOLD = 50.0   # High variance = unstable
 
 

@@ -31,11 +31,15 @@ def forecast(model: pm.ARIMA, steps: int = 30) -> np.ndarray:
     return preds, conf_int
 
 
-def get_forecast_trend(preds: np.ndarray, threshold: float = 0.01) -> str:
-    slope = np.polyfit(np.arange(len(preds)), preds, 1)[0]
-    if slope > threshold:
+def get_forecast_trend(preds: np.ndarray, threshold: float = 0.05) -> str:
+    start = np.mean(preds[:5])
+    end   = np.mean(preds[-5:])
+    if start == 0:
+        return 'Stable'
+    change = (end - start) / (start + 1e-6)
+    if change > threshold:
         return 'Increasing'
-    elif slope < -threshold:
+    elif change < -threshold:
         return 'Decreasing'
     else:
         return 'Stable'
