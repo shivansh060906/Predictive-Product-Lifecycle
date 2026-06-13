@@ -24,8 +24,7 @@ prices_path = os.path.join(BASE_DIR, 'data', 'raw', 'sell_prices.csv')
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 st.sidebar.header('Data Settings')
-n_products    = st.sidebar.slider('Number of products to analyse', 5, 50, 20)
-store_filter  = st.sidebar.text_input('Filter by store (optional)', '')
+n_products    = st.sidebar.slider('Number of products to analyse', 5, 90, 50)
 forecast_days = st.sidebar.slider('Forecast horizon (days)', 15, 60, 30)
 
 if st.sidebar.button('Load & Run Analysis'):
