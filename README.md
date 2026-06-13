@@ -34,7 +34,7 @@ python notebooks/eda.py
 
 **2. ARIMA Analysis**
 ```bash
-python notebooks/arima_analysis.py
+python notebooks/prophet_analysis.py
 ```
 
 **3. Train & Save Models**

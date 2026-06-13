@@ -3,7 +3,7 @@ import pandas as pd
 
 GROWTH_THRESHOLD   = 0.10   # 5% growth rate
 DECLINE_THRESHOLD  = -0.10  # -5% growth rate
-VARIANCE_THRESHOLD = 50.0   # High variance = unstable
+VARIANCE_THRESHOLD = 33.0   # obtained from data median
 
 
 def classify_lifecycle(
@@ -11,12 +11,20 @@ def classify_lifecycle(
     forecast_trend: str,
     variance: float
 ) -> str:
-    if growth_rate > GROWTH_THRESHOLD or forecast_trend == 'Increasing':
+    if forecast_trend == 'Increasing' and variance < VARIANCE_THRESHOLD:
         return 'Growth'
-    elif growth_rate < DECLINE_THRESHOLD or forecast_trend == 'Decreasing':
+    elif forecast_trend == 'Decreasing' and variance < VARIANCE_THRESHOLD:
         return 'Decline'
-    else:
+    elif forecast_trend in ('Increasing', 'Decreasing') and variance >= VARIANCE_THRESHOLD:
         return 'Maturity'
+    else:
+        # Stable forecast
+        if growth_rate > 0.20 and variance < 100:
+            return 'Growth'
+        elif growth_rate < -0.15 and variance < 100:
+            return 'Decline'
+        else:
+            return 'Maturity'
 
 
 def estimate_time_to_decline(

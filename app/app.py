@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from src.data_loader        import load_m5_data, melt_sales, merge_calendar, select_products
 from src.preprocess         import aggregate_sales, handle_missing, get_product_series
 from src.feature_engineering import build_feature_matrix, compute_growth_rate, compute_trend_slope
-from src.arima_model        import fit_arima, forecast, get_forecast_trend
+from src.prophet_model        import fit_prophet, forecast, get_forecast_trend
 from src.clustering         import cluster_products, label_clusters
 from src.lifecycle          import run_lifecycle_analysis
 from src.utils              import plot_forecast, format_results_table
@@ -34,7 +34,7 @@ if st.sidebar.button('Load & Run Analysis'):
         sales, calendar, prices = load_m5_data(sales_path, calendar_path, prices_path)
         sales_long = melt_sales(sales)
         sales_long = merge_calendar(sales_long, calendar)
-        subset     = select_products(sales_long, n=n_products, store_id=store_filter or None)
+        subset = select_products(sales_long, n=100, store_id='CA_3')
 
     with st.spinner('Preprocessing…'):
         agg = aggregate_sales(subset)
@@ -51,7 +51,7 @@ if st.sidebar.button('Load & Run Analysis'):
     progress = st.progress(0)
     for i, item_id in enumerate(product_ids):
         series      = get_product_series(agg, item_id)
-        model       = fit_arima(series)
+        model       = fit_prophet(series)
         preds, ci   = forecast(model, steps=forecast_days)
         trend       = get_forecast_trend(preds)
         growth_rate = compute_growth_rate(series)

@@ -61,3 +61,16 @@ def format_results_table(results: list) -> pd.DataFrame:
         'recommendation':  'Recommendation'
     })
     return df
+
+
+# import pandas as pd
+# from src.data_loader import *
+# from src.preprocess import *
+# from src.feature_engineering import build_feature_matrix
+#
+# sales, cal, prices = load_m5_data('../data/raw/sales_train_validation.csv','../data/raw/calendar.csv','../data/raw/sell_prices.csv')
+# sl = melt_sales(sales); sl = merge_calendar(sl, cal)
+# sub = select_products(sl, n=100, category='FOODS')
+# agg = aggregate_sales(sub); agg = handle_missing(agg)
+# fm = build_feature_matrix(agg)
+# print(fm['variance'].describe())

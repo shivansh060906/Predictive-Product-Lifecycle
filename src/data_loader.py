@@ -29,9 +29,12 @@ def merge_calendar(sales_long: pd.DataFrame, calendar: pd.DataFrame) -> pd.DataF
     return sales_long
 
 
-def select_products(sales_long: pd.DataFrame, n: int = 20, store_id: str = None) -> pd.DataFrame:
+def select_products(sales_long, n=20, store_id=None, category='FOODS', department='FOODS_3'):
     if store_id:
         sales_long = sales_long[sales_long['store_id'] == store_id]
-
+    if category:
+        sales_long = sales_long[sales_long['cat_id'] == category]
+    if department:
+        sales_long = sales_long[sales_long['dept_id'] == department]
     top_products = sales_long['item_id'].value_counts().head(n).index.tolist()
     return sales_long[sales_long['item_id'].isin(top_products)]

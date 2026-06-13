@@ -4,7 +4,7 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 from src.data_loader import load_m5_data, melt_sales, merge_calendar, select_products
 from src.preprocess import aggregate_sales, handle_missing, get_product_series
-from src.arima_model import check_stationarity, fit_arima, forecast, get_forecast_trend
+from src.prophet_model import check_stationarity, fit_prophet, forecast, get_forecast_trend
 from src.utils import plot_forecast
 
 # ── Load ──────────────────────────────────────────────────────────────────────
@@ -29,19 +29,10 @@ print(f'Analysing: {ITEM_ID} | Length: {len(series)}')
 result = check_stationarity(series)
 print(f"ADF p-value: {result['p_value']:.4f} — Stationary: {result['is_stationary']}")
 
-# ── ACF / PACF ────────────────────────────────────────────────────────────────
-fig, axes = plt.subplots(1, 2, figsize=(14, 4))
-plot_acf(series.dropna(),  ax=axes[0], lags=40)
-plot_pacf(series.dropna(), ax=axes[1], lags=40)
-plt.suptitle(f'ACF / PACF — {ITEM_ID}')
-plt.tight_layout()
-plt.savefig('../data/processed/acf_pacf.png')
-plt.close()
-
 # ── Fit & Forecast ────────────────────────────────────────────────────────────
-model       = fit_arima(series)
-preds, ci   = forecast(model, steps=30)
-trend       = get_forecast_trend(preds)
+model = fit_prophet(series)
+preds, ci = forecast(model, steps=30)
+trend = get_forecast_trend(preds)
 
 print(f'Order: {model.order}')
 print(f'Forecast trend: {trend}')

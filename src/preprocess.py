@@ -1,13 +1,10 @@
 import pandas as pd
 
 def aggregate_sales(sales_long: pd.DataFrame) -> pd.DataFrame:
-    """
-    Aggregate daily sales per product across all stores.
-    """
     agg = (
         sales_long
         .groupby(['item_id', 'date'])['sales']
-        .sum()
+        .sum()  # sum across all 10 stores
         .reset_index()
         .sort_values(['item_id', 'date'])
     )

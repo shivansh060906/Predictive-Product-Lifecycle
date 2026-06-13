@@ -5,7 +5,7 @@ data/processed/
 .png
 
 # Models
-models/arima_models.pkl
+models/prophet_models.pkl
 models/clustering.pkl
 
 # Python
